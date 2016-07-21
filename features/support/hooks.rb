@@ -19,9 +19,8 @@ end
 Before('@create_workspace') do
   client = ApiRestClient.new
   #create a workspace Ericka
-  json_param = {:name => "General_workspace01"}
+  json_param = {:name => "General_workspaceX"}
   $workspace = WorkspaceRequest.create_workspace(client,"POST",json_param)
-  p "workspace to delete #{$workspace.name}"
 end
 
 After('@delete_workspace') do

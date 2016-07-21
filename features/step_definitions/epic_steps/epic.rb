@@ -58,6 +58,11 @@ And(/^I expect the project_id is the same that I have sent$/) do
   expect(@json_response["project_id"] == $project.id).to be true
 
 end
+And(/^I send a (GET) request for the deleted epic$/) do |method|
+  @http_response = EpicRequest.get_epic_by_id(@client,method,$project.id,$epic.id)
+
+end
+
 And(/^I expect the all data type returned from epic request are correct$/) do
   @array_string_name = @array_epic1.map{|epic| epic.name }
   @array_integer_id = @array_epic1.map{|epic| epic.id }
@@ -87,14 +92,30 @@ end
 And(/^I expect an error message to invalid data epic$/) do
   @json_response = JSON.parse(@http_response.body)
   expect(@json_response["code"]).to eql(@error.code)
-  #expect(@json_response["'name' parameter must be 5000 characters or less"]).to eql(Epic::ERROR[:requirement])
-end
 
+end
 
 And(/^I expect an error message to empty data epic$/) do
   @json_response = JSON.parse(@http_response.body)
-  expect(@json_response["code"]).to eql(@error.code)
+  expect(@json_response["code"]).to eql(Epic::ERROR[:code_invalid_parameter])
 end
+
+# And(/^The epic should not be in the project anymore$/)do
+#   @json_response = JSON.parser(@http_response.body)
+#   expect(@json_response["code"]).to be eql(Epic::ERROR[:code])
+#   expect(@json_response["kind"]).to be eql(Epic::ERROR[:kind])
+#   expect(@json_response["error"]).to be eql(Epic::ERROR[:error_message])
+# end
+When(/^I send an epic (PUT) request with invalid id (.*?)$/) do |method,epic_id ,json_text|
+  @http_response = EpicRequest.update_epic(@client, method, $project.id, json_text, epic_id)
+
+end
+And(/^I expect and error message for invalid id$/) do
+  @json_response = JSON.parse(@http_response.body)
+  expect(@json_response["code"]).to eql(Epic::ERROR[:code])
+end
+
+
 
 
 
