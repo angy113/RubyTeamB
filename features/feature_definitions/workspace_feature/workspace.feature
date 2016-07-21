@@ -13,7 +13,7 @@
       When I send a workspace POST with the json
       """
       {
-        "name":"workspaceTest001"
+        "name":"workspaceTestXYZ"
       }
       """
       Then I expect Status code 200
@@ -24,7 +24,7 @@
       When I send a workspace PUT request to add project
       Then I expect Status code 200
 
-    @smoke @create_workspace
+    @smoke
     Scenario: DELETE workspace
       Given I have set a connection to pivotal_tracker API service
       When I send a workspace DELETE request to delete WorkspaceRequest
@@ -46,3 +46,32 @@
         | workspace-E1 |
         | workspace-E2 |
         | workspace-E3 |
+
+    @acceptance
+    Scenario Outline: Verify Kind Workspace
+      Given I have set a connection to pivotal_tracker API service
+      When I send a workspace POST request with the json
+    """
+      {
+        "name":"<Name>"
+      }
+    """
+      Then I expect Status code 200
+      And I expect the kind of workspace is equal to workspace
+      Examples:
+        | Name |
+        | workspace-Kind-E1 |
+
+    @acceptance
+    Scenario: Verify the all data type that return the get request to workspace are correct
+      Given I have set a connection to pivotal_tracker API service
+      When I send a workspace GET request to
+      Then I expect Status code 200
+      And I expect the all data type returned from workspace request are correct
+
+    @negative
+    Scenario: Verify that a workspace cannot be obtained for a non-existent workspace
+      Given I have set a connection to pivotal_tracker API service
+      When I send a workspace GET request for a workspace 000
+      Then I expect Status code 404
+      And I expect an error message from workspace
