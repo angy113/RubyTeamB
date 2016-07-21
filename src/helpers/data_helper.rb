@@ -50,6 +50,7 @@ class DataHelper
     is_same_value = true
     array1.each do |key, value|
      return if(!array2[key] == value)
+
     end
     return is_same_value
   end

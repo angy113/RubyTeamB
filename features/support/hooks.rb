@@ -5,7 +5,9 @@ require_relative '../../src/helpers/rest_client/api_rest_client'
 Before('@create_project') do
   client = ApiRestClient.new
   #create the project
-  json_param = {:name => "General_project_00001"}
+
+  json_param = {:name => "General_project_5"}
+
   _,$project = ProjectRequest.create_project(client,"POST",json_param.to_json)
   
 end
@@ -19,7 +21,7 @@ end
 Before('@create_workspace') do
   client = ApiRestClient.new
   #create a workspace Ericka
-  json_param = {:name => "General_workspace01"}
+  json_param = {:name => "General_workspaceX"}
   $workspace = WorkspaceRequest.create_workspace(client,"POST",json_param)
   p "workspace to delete #{$workspace.name}"
 end
