@@ -5,7 +5,7 @@ require_relative '../../src/helpers/rest_client/api_rest_client'
 Before('@create_project') do
   client = ApiRestClient.new
   #create the project
-  json_param = {:name => "General_project_00001"}
+  json_param = {:name => "General_project_TeamB"}
   _,$project = ProjectRequest.create_project(client,"POST",json_param.to_json)
   
 end
