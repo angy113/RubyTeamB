@@ -66,7 +66,7 @@ And(/^I expect all data correct$/) do
   result = false
   @json_value = JSON.parse(@json_value)
   result = DataHelper.contain_same_value?(@json_value, @json_response)
-  #expect(result).to be true
+  expect(result).to be true
 end
 
 And(/^I expect the date format is correct$/) do

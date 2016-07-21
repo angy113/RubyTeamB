@@ -35,8 +35,8 @@ Feature: Final Project for API Testing class - PROJECT
     When I send a project DELETE request to ProjectRequest
     Then I expect Status code 204
 
-  @positive
-  Scenario: Verify all data is correct
+  @acceptance
+  Scenario: Verify that a project can be created with different json post
     Given I have set a connection to pivotal_tracker API service
     When I send a project POST with the json
     """
