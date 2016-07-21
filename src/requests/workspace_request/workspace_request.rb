@@ -45,8 +45,7 @@ class WorkspaceRequest
     http_request = client.get_request(method, end_point)
     http_request.body = json_text
     http_response = client.execute_request(client.get_connection, http_request)
-    p "WORKSPACE put #{http_response.body}"
-    p http_response.code
+
     obj_workspace = JSON.parse(http_response.body)
     var = DataHelper.rehash_to_symbol_keys(obj_workspace)
     if http_response.code.to_s=="200"
