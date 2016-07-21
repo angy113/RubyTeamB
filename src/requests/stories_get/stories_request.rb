@@ -30,7 +30,7 @@ class StoriesRequest
     http_request = client.get_request(method, end_point)
     http_request.body = json_text
     http_response = client.execute_request(client.get_connection, http_request)
-    http_response
+    return http_response
   end
 
   def self.delete_story(client, method, id_project, id_story) #DELETE
@@ -39,5 +39,4 @@ class StoriesRequest
     http_response = client.execute_request(client.get_connection, http_request)
     http_response
   end
-
 end

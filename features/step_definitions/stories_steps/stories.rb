@@ -8,6 +8,7 @@ end
 
 When(/^I send stories (POST) with json$/) do |method, json_text|
   @http_response, $stories = StoriesRequest.create_stories(@client, method, $project.id, json_text)
+
 end
 
 When(/^I send a story (PUT) request to StoriesRequest with json$/) do |method, json_text|
@@ -25,11 +26,7 @@ When(/^I send storiesAcceptance (POST) with json$/) do |method, json_text|
   @http_response, @story = StoriesRequest.create_stories(@client, method, $project.id, json_text)
   @json_response = JSON.parse(@http_response.body)
 end
-When(/^I send storiesNegative (POST) with json$/) do |method, json_text|
-  @json_value = json_text
-  @http_response, @error = StoriesRequest.create_stories(@client, method, $project.id, json_text)
-  @json_response = JSON.parse(@http_response.body)
-end
+
 
 And(/^I expect the data same of data send$/) do
   result = false
@@ -60,3 +57,22 @@ And(/^I expect the project_id is the same that I have send$/) do
   expect(@json_response["project_id"] == $project.id).to be true
 
 end
+When(/^I send storiesNegative (POST) with json$/) do |method, json_text|
+  @json_value = json_text
+  @http_response, @error = StoriesRequest.create_stories(@client, method, $project.id, json_text)
+  @json_response = JSON.parse(@http_response.body)
+
+end
+When(/^I send a NegativeStory (PUT) request to StoriesRequest with json$/) do |method, json_text|
+  @http_response, @error = StoriesRequest.update_story(@client, method, $project.id, json_text, $stories.id)
+end
+
+And(/^I (DELETE) the recent story created$/)do|method|
+  @http_response = StoriesRequest.delete_story(@client, method, $project.id, $stories.id)
+  @idb=$stories.id
+end
+
+And(/^I (GET) try to call the recent story deleted$/)do|method|
+  @http_response = StoriesRequest.get_stories(@client, method, @idb)
+end
+

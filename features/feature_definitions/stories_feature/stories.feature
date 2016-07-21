@@ -89,7 +89,7 @@
       Examples:
         | Name |
         | testD|
-    @negative @delete_project
+    @negative
     Scenario: Verify that the project_id is the same that I have sent
       Given I have set a connection to pivotal_tracker API service
       When I send storiesNegative POST with json
@@ -99,4 +99,51 @@
       }
     """
       Then I expect Status code 400
-#      And I expect the project_id is the same that I have send
+
+#--------------------------
+    @negative
+    Scenario: Verify that is not posible to create a new story with a custom Id
+      Given I have set a connection to pivotal_tracker API service
+      When I send storiesNegative POST with json
+    """
+      {
+        "id": 126775155
+      }
+    """
+      Then I expect Status code 400
+
+
+    @negative
+    Scenario: Verify that is not posible to modify a create date_at of story with date in the future
+      Given I have set a connection to pivotal_tracker API service
+      When I send a NegativeStory PUT request to StoriesRequest with json
+    """
+      {
+        "created_at": "2017-07-21T11:09:37Z"
+      }
+    """
+      Then I expect Status code 404
+
+
+      Scenario: Verify that is not posible to modify a story type with an arbitrary name
+      Given  I have set a connection to pivotal_tracker API service
+      When I send a NegativeStory PUT request to StoriesRequest with json
+      """
+      {
+        "story_type": "bla"
+      }
+      """
+      Then I expect Status code 400
+
+    @negative @delete_project
+       Scenario: Verify that when a story was deleted can't be call
+       Given I have set a connection to pivotal_tracker API service
+       When I send stories POST with json
+       """
+       {
+        "name": "StoryDelete"
+       }
+       """
+       And I DELETE the recent story created
+       And I GET try to call the recent story deleted
+       Then I expect Status code 404

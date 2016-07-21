@@ -27,10 +27,18 @@ class EpicRequest
     http_request = client.get_request(method, end_point)
     http_request.body = json_text
     http_response = client.execute_request(client.get_connection, http_request)
-    obj_epic = JSON.parse(http_response.body)
-    var = DataHelper.rehash_to_symbol_keys(obj_epic)
-    obj_epic = Epic.new(var)
-    return http_response, obj_epic
+    if(http_response.code.to_s == "200")
+      obj_epic = JSON.parse(http_response.body)
+      var = DataHelper.rehash_to_symbol_keys(obj_epic)
+      obj_epic = Epic.new(var)
+      return http_response, obj_epic
+    else
+      obj_error = JSON.parse(http_response.body)
+      var = DataHelper.rehash_to_symbol_keys(obj_error)
+      obj_error = Error.new(var)
+      return http_response, obj_error
+    end
+
   end
 
   def self.update_epic(client, method, id_project, json_text, id_epic) #POST
